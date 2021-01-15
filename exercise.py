@@ -1,4 +1,4 @@
-#part 1 
+#---part 1--- 
 import json
 with open('precipitation.json') as data:
     #finding out the station name of Seattle
@@ -9,7 +9,6 @@ with open('precipitation.json') as data:
             location, state, station = city.strip().split(',')
             stations_info.append({'location': location,'state':state,'station':station})
         station_Seattle = stations_info[1]['station']
-        print(station_Seattle)
     #filtering through data for Seattle and creating lists with precipitation info for each day(available in the data) of each separate month
     precipitation = json.load(data)
     precipitation_jan = []
@@ -52,15 +51,15 @@ with open('precipitation.json') as data:
             elif '2010-12' in measurement['date']:
                 precipitation_dec.append(measurement['value']/10)
     #making a list with monthly totals for Seattle
-    # months = ['January','February','March','April','May','June','July','August','September','October','November','December']
     totals = [sum(precipitation_jan),sum(precipitation_feb),sum(precipitation_mar),sum(precipitation_apr),sum(precipitation_may),sum(precipitation_jun),sum(precipitation_jul),sum(precipitation_aug),sum(precipitation_sep),sum(precipitation_oct),sum(precipitation_nov),sum(precipitation_dec)]
-    # monthly_total = []
-    # for month in months:
-    #     i = month.strip().split()
-
-    #     monthly_total.append({'Month':months,'Total': totals})
-    # print(monthly_total)
     with open('monthly_totals.json','w') as file:
         #save the results
         json.dump(totals,file, indent = 4)
-
+#---part 2---
+#calculating the total precepitation for 2010 in Seattle
+total_2010 = sum(totals)
+#
+relative_precepitation = []
+for month in totals:
+    relative_precepitation.append(round(month/total_2010,1))
+print(relative_precepitation)
